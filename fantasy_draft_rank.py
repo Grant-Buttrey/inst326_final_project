@@ -42,3 +42,8 @@ class Rank():
     
     
 class Draft_Round():
+    
+def main():
+    
+if __name__ == "__main__":
+    
