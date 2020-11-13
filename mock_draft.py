@@ -14,6 +14,15 @@ def second(tup):
     return tup[-1]
     
 def draft_round(player_dict):
+    """Sorts the players into draft rounds based on their ranks. 
+    
+    Args:
+        player_dict (dict): A dictionary containing the players information. 
+        
+    Returns:
+        The dictionary draft_dict. 
+    
+    """
     unsorted_ranks = list()
     
     for player in player_dict.keys:
@@ -30,5 +39,12 @@ def draft_round(player_dict):
             draft_dict[(index/8)+1] = list(sorted_ranks[index][0])
             
         return draft_dict
-class Draft_Round():
-    pass
+
+
+def mock_draft(draft_dict):
+    """Simulates an 8 person mock draft. 
+    
+    Args:
+        draft_dict (dict): A dictionary containing the players information. 
+        
+    """
