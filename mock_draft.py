@@ -4,3 +4,31 @@ This Program will run an 8 man mock draft.
 
 import fantasy_draft_rank as ranks
 
+def second(tup):
+    """
+    This method is for returning the last member of a tuple
+    
+    Parameters:
+        tup(tuple): A tuple of two elements, the second of which is an integer
+    """
+    return tup[-1]
+    
+def draft_round(player_dict):
+    unsorted_ranks = list()
+    
+    for player in player_dict.keys:
+        unsorted_ranks.append(player,player_dict[player])
+    
+    sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
+    
+    draft_dict = dict()
+    
+    for index in range(len(sorted_ranks)):
+        if((index/8)+1 in draft_dict.keys()):
+            draft_dict[(index/8)+1].append(sorted_ranks[index][0])
+        else:
+            draft_dict[(index/8)+1] = list(sorted_ranks[index][0])
+            
+        return draft_dict
+class Draft_Round():
+    pass
