@@ -55,64 +55,57 @@ class Rank():
     
     """
     
-    def __init__(self, player_api):
-        self.player_stats = Player.player_stats(player_api)
+    def __init__(self, player_instance):
+        self.player_stats = Player.player_stats(player_instance)
+        self.rank_points = 0
                
-    def position_points(player_api):
+    def position_points(self):
         """This method will find out what the position is 
         and add or take away points to the players value.
         
+        Args:
+            self (Rank): A player object that contains the attributes of a players. 
+        
+        Side Effects:
+            rank_points (int): Modifies the value of rank_points.  
         """
 
         
-    def last_season_stats(player_api):
+    def last_season_stats(self):
         """This method will categorize the players stats and 
         add or take away points to the players value. 
         
+        Args: 
+            self (Rank): A player object that contains the attributes of a players.
+        
+        Side Effects:
+            rank_points (int): Modifies the value of rank_points. 
+            
         """
         
         
-    def rank(player_api):
+    def rank(self):
         """This method will total all of the points for the player
         and append them to a list of players from most points to
         least points.
         
-        """
+        Args:
+            self (Rank): A player object that contains the attributes of a players.
         
-    pass
+        
+        """
     
 
-def second(tup):
-    """
-    This method is for returning the last member of a tuple
-    
-    Parameters:
-        tup(tuple): A tuple of two elements, the second of which is an integer
-    """
-    return tup[-1]
-    
-def draft_round(player_dict):
-    unsorted_ranks = list()
-    
-    for player in player_dict.keys:
-        unsorted_ranks.append(player,player_dict[player])
-    
-    sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
-    
-    draft_dict = dict()
-    
-class Draft_Round():
-    pass
+
 def main():
+    """Reads in the API and sets it equal to a variable called players.
+    
+    """
     api = requests.get('https://www.fantasyfootballdatapros.com/api/players/2019/all')
     players = api.json()
 
 if __name__ == "__main__":
     
-    for index in range(len(sorted_ranks)):
-        if((index/8)+1 in draft_dict.keys()):
-            draft_dict[(index/8)+1].append(sorted_ranks[index][0])
-        else:
-            draft_dict[(index/8)+1] = list(sorted_ranks[index][0])
+    
             
-    # return draft_dict
+    
