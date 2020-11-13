@@ -36,16 +36,24 @@ class Player():
         
         Args:
             player_api (json): The api being read in the main function. 
+            
+        Return:
+            A list of player instances. 
         
         """
         player_instances = []
     
-    for i in players:
+    for i in player_api:
         player_instances.append(player_api(i["player_name"], i["position"], i['stats']["passing"]["passing_yds"], i['stats']["passing"]["passing_td"], i['stats']["receiving"]["receiving_td"], i['stats']["receiving"]["receiving_yds"]
                                            ,i['stats']["rushing"]["rushing_yds"], i['stats']["rushing"]["rushing_td"], i['fumbles_lost']))
         
+        return player_instances
+    
     def __repr__(self):
         """Allows the player instance to be returned as the players name. 
+        
+        Returns:
+            The name of the player.
         
         """
         return self.name
@@ -68,6 +76,10 @@ class Rank():
         
         Side Effects:
             rank_points (int): Modifies the value of rank_points.  
+            
+        Returns:
+            The variable rank_points.
+        
         """
 
         
@@ -81,6 +93,9 @@ class Rank():
         Side Effects:
             rank_points (int): Modifies the value of rank_points. 
             
+        Returns:
+            The variable rank_points.
+            
         """
         
         
@@ -92,7 +107,10 @@ class Rank():
         Args:
             self (Rank): A player object that contains the attributes of a players.
         
-        
+        Returns:
+            The variable rank_points.
+            A dictionary containing the players name and their rank points.
+    
         """
     
 
