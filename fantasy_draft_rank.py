@@ -123,4 +123,3 @@ def main():
     players = api.json()
 
 if __name__ == "__main__":
-            
