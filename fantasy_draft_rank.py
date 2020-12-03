@@ -57,6 +57,7 @@ class Player():
         
         """
         return self.name
+    
 class Rank():
     """This class will rank the players from best to worst based on their 
     statistics from the 2019 season.
@@ -81,8 +82,20 @@ class Rank():
             The variable rank_points.
         
         """
-
-        
+        if self.player_stats[1] == "QB":
+            self.rank_points += 2
+            
+        elif self.player_stats[1] == "RB":
+            self.rank_points += 4
+            
+        elif self.player_stats[1] == "WR":
+            self.rank_points += 3
+            
+        elif self.player_stats[1] == "TE":
+            self.rank_points += 2
+            
+        return self.rank_points 
+    
     def last_season_stats(self):
         """This method will categorize the players stats and 
         add or take away points to the players value. 
@@ -99,9 +112,166 @@ class Rank():
         """
         
         
+        #passing yards
+        if self.player_stats[2] <=500:
+            self.rank_points += 0
+        elif self.player_stats[2] > 500 and self.player_stats[2] <= 1000:
+            self.rank_points += 1
+        elif self.player_stats[2] > 1000 and self.player_stats[2] <= 1500:
+            self.rank_points += 2
+        elif self.player_stats[2] > 1500 and self.player_stats[2] <= 2000:
+            self.rank_points += 3
+        elif self.player_stats[2] > 2000 and self.player_stats[2] <= 2500:
+            self.rank_points += 4
+        elif self.player_stats[2] > 2500 and self.player_stats[2] <= 3000:
+            self.rank_points += 5
+        elif self.player_stats[2] > 3000 and self.player_stats[2] <= 3500:
+            self.rank_points += 6
+        elif self.player_stats[2] > 3500 and self.player_stats[2] <= 4000:
+            self.rank_points += 7
+        elif self.player_stats[2] > 4000 and self.player_stats[2] <= 4500:
+            self.rank_points += 8
+        elif self.player_stats[2] > 4500 and self.player_stats[2] <= 5000:
+            self.rank_points += 9
+        elif self.player_stats[2] >= 5000:
+            self.rank_points += 10
+
+        #passing touchdowns
+        if self.player_stats[3] <= 5:
+            self.rank_points += 0
+        elif self.player_stats[3] > 5 and self.player_stats[3] <= 10:
+            self.rank_points += 1
+        elif self.player_stats[3] > 10 and self.player_stats[3] <= 15:
+            self.rank_points += 2
+        elif self.player_stats[3] > 15 and self.player_stats[3] <= 20:
+            self.rank_points += 3
+        elif self.player_stats[3] > 20 and self.player_stats[3] <= 25:
+            self.rank_points += 4
+        elif self.player_stats[3] > 25 and self.player_stats[3] <= 30:
+            self.rank_points += 5
+        elif self.player_stats[3] >= 30:
+            self.rank_points += 6
+        
+        rushing_points = 0
+        
+        #rushing yards 
+        if self.player_stats[6] <= 200:
+            rushing_points += 1 
+        elif self.player_stats[6] > 200 and self.player_stats[4] <= 400:
+            rushing_points += 2
+        elif self.player_stats[6] > 400 and self.player_stats[4] <= 600:
+            rushing_points += 3
+        elif self.player_stats[6] > 600 and self.player_stats[4] <= 800:
+            rushing_points += 4
+        elif self.player_stats[6] > 800 and self.player_stats[4] <= 1000:
+            rushing_points += 5
+        elif self.player_stats[6] > 1000 and self.player_stats[4] <= 1200:
+            rushing_points += 6
+        elif self.player_stats[6] > 1200 and self.player_stats[4] <= 1400:
+            rushing_points += 7
+        elif self.player_stats[6] > 1400 and self.player_stats[4] <= 1600:
+            rushing_points += 8
+        elif self.player_stats[6] > 1600 and self.player_stats[4] <= 1800:
+            rushing_points += 9
+        elif self.player_stats[6] > 1800 and self.player_stats[4] <= 2000:
+            rushing_points += 10
+        
+        #extra value for qb rushing yards
+        if self.player_stats[1] == "QB":
+            self.rank_points += rushing_points * 1.2
+        else:
+            self.rank_points += rushing_points
+        
+        rushing_td = 0
+        
+        #rushing touchdown
+        if self.player_stats[7] <= 3:
+            rushing_td += 1
+        elif self.player_stats[7] > 3 and self.player_stats[7] <= 6:
+            rushing_td += 2
+        elif self.player_stats[7] > 6 and self.player_stats[7] <= 9:
+            rushing_td += 3
+        elif self.player_stats[7] > 9 and self.player_stats[7] <= 12:
+            rushing_td += 4
+        elif self.player_stats[7] > 12 and self.player_stats[7] <= 15:
+            rushing_td += 5
+        elif self.player_stats[7] >= 16:
+            rushing_td += 6
+        
+        #extra value for qb rushing touchdowns
+        if self.player_stats[1] == "QB":
+            self.rank_points += rushing_td * 1.2
+        else:
+            self.rank_points += rushing_td
+        
+        recieving_yards = 0
+        
+        #receiving yards
+        if self.player_stats[5] <= 180:
+            recieving_yards += 1
+        elif self.player_stats[5] > 180 and self.player_stats[5] <= 360:
+            recieving_yards += 2
+        elif self.player_stats[5] > 360 and self.player_stats[5] <= 540:
+            recieving_yards += 3
+        elif self.player_stats[5] > 540 and self.player_stats[5] <= 720:
+            recieving_yards += 4
+        elif self.player_stats[5] > 720 and self.player_stats[5] <= 900:
+            recieving_yards += 5
+        elif self.player_stats[5] > 900 and self.player_stats[5] <= 1080:
+            recieving_yards += 6
+        elif self.player_stats[5] > 1080 and self.player_stats[5] <= 1260:
+            recieving_yards += 7
+        elif self.player_stats[5] > 1260 and self.player_stats[5] <= 1440:
+            recieving_yards += 8
+        elif self.player_stats[5] > 1440 and self.player_stats[5] <= 1620:
+            recieving_yards += 9
+        elif self.player_stats[5] > 1620 and self.player_stats[5] <= 1800:
+            recieving_yards += 10
+        
+        #extra value for qb receiving yards
+        if self.player_stats[1] == "RB":
+            self.rank_points += recieving_yards * 1.2
+        else:
+            self.rank_points += recieving_yards
+        
+        recieving_touchdowns = 0
+        
+        #receiving touchdowns
+        if self.player_stats[4] <= 2:
+            recieving_touchdowns += 1
+        elif self.player_stats[4] > 2 and self.player_stats[4] <= 4:
+            recieving_touchdowns += 2
+        elif self.player_stats[4] > 4 and self.player_stats[4] <= 6:
+            recieving_touchdowns += 3
+        elif self.player_stats[4] > 6 and self.player_stats[4] <= 8:
+            recieving_touchdowns += 4
+        elif self.player_stats[4] > 8 and self.player_stats[4] <= 10:
+            recieving_touchdowns += 5
+        elif self.player_stats[4] > 10:
+            recieving_touchdowns += 6
+        
+        #extra value for RB receiving yards
+        if self.player_stats[1] == "RB":
+            self.rank_points += recieving_touchdowns * 1.2
+        else:
+            self.rank_points += recieving_touchdowns
+        
+        #fumbles
+        if self.player_stats[8] <= 3:
+            self.rank_points -= 0
+        elif self.player_stats[8] > 3 and self.player_stats[8] <= 6:
+            self.rank_points -= 1
+        elif self.player_stats[8] > 6 and self.player_stats[8] <= 9:
+            self.rank_points -= 2
+        elif self.player_stats[8] > 9 and self.player_stats[8] <= 12:
+            self.rank_points -= 3
+        elif self.rank_points[8] > 12:
+            self.rank_points -= 4
+        
+        return self.rank_points
+        
     def rank(self):
-        """This method will total all of the points for the player
-        and append them to a list of players from most points to
+        """Append the players to a list of players from most points to
         least points.
         
         Args:
@@ -112,7 +282,9 @@ class Rank():
             A dictionary containing the players name and their rank points.
     
         """
-    
+        player_rankings = {}
+        
+        
 
 
 def main():
