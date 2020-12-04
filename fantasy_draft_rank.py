@@ -68,7 +68,8 @@ class Rank():
     def __init__(self, player_instance):
         self.player_stats = Player.player_stats(player_instance)
         self.rank_points = 0
-               
+        
+    #Driver: Sakib Navigator: Grant          
     def position_points(self):
         """This method will find out what the position is 
         and add or take away points to the players value.
@@ -97,6 +98,7 @@ class Rank():
             
         return self.rank_points 
     
+    #Driver: Grant Navigator: Sakib
     def last_season_stats(self):
         """This method will categorize the players stats and 
         add or take away points to the players value. 
