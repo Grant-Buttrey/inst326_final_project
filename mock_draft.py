@@ -4,6 +4,7 @@ This Program will run an 8 man mock draft.
 
 import fantasy_draft_rank as ranks
 
+#Driver: Grant Navigator: Sakib
 def second(tup):
     """
     This method is for returning the last member of a tuple
@@ -13,7 +14,7 @@ def second(tup):
     """
     return tup[-1]
     
-#Driver: William Navigator: Sakib
+#Driver: William Navigator: Rachel
 def draft_round(player_dict):
     """Sorts the players into draft rounds based on their ranks. 
     
@@ -42,7 +43,7 @@ def draft_round(player_dict):
             
     return draft_dict
 
-#Driver: Rachel Navigator: William
+#Driver: Rachel Navigator: Grant
 def mock_draft(draft_dict):
     """Simulates an 8 person mock draft. 
     
