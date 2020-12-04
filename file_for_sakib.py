@@ -5,7 +5,7 @@ This is a script for creating an NFL fantasy draft ranking system.
 import re
 import requests 
 import operator
-
+import pprint
 class Player():
     """This class with gather all of the statistics for each player in the api.
     
@@ -35,6 +35,7 @@ class Player():
         player_stats = requests.get("https://www.fantasyfootballdatapros.com/api/players/2019/all")
         self.player_data = player_stats.json()
         
+        #pprint.pprint(self.player_data)
         
     def player_stats(self):
         """Creates a list of player instances and appends players statistics to
@@ -49,24 +50,13 @@ class Player():
         """
         player_instances = {}
         iterator = 0
-        
-        #RUN REGULARLY
-        """
         for i in self.player_data:
-            player_instances[self.player_data[iterator]["player_name"]] = Player(self.player_data[iterator]["player_name"], self.player_data[iterator]["position"], self.player_data[iterator]['stats']["passing"]["passing_yds"], self.player_data[iterator]['stats']["passing"]["passing_td"], self.player_data[iterator]['stats']["receiving"]["receiving_td"], self.player_data[iterator]['stats']["receiving"]["receiving_yds"]
-                                            ,self.player_data[iterator]['stats']["rushing"]["rushing_yds"], self.player_data[iterator]['stats']["rushing"]["rushing_td"], self.player_data[iterator]['fumbles_lost'])
+            # player_instances[self.player_data[iterator]["player_name"]] = Player(self.player_data[iterator]["position"], self.player_data[iterator]['stats']["passing"]["passing_yds"], self.player_data[iterator]['stats']["passing"]["passing_td"], self.player_data[iterator]['stats']["receiving"]["receiving_td"], self.player_data[iterator]['stats']["receiving"]["receiving_yds"]
+            #                                ,self.player_data[iterator]['stats']["rushing"]["rushing_yds"], self.player_data[iterator]['stats']["rushing"]["rushing_td"], self.player_data[iterator]['fumbles_lost'])
+            # # iterator += 1
+            print(self.player_data[iterator]["player_name"])
             iterator += 1
-        """
-        #COMPACT RUN
-        for i in range(10):
-            player_instances[self.player_data[iterator]["player_name"]] = Player(self.player_data[iterator]["player_name"], self.player_data[iterator]["position"], self.player_data[iterator]['stats']["passing"]["passing_yds"], self.player_data[iterator]['stats']["passing"]["passing_td"], self.player_data[iterator]['stats']["receiving"]["receiving_td"], self.player_data[iterator]['stats']["receiving"]["receiving_yds"]
-                                            ,self.player_data[iterator]['stats']["rushing"]["rushing_yds"], self.player_data[iterator]['stats']["rushing"]["rushing_td"], self.player_data[iterator]['fumbles_lost'])
-            print(iterator)
-            iterator += 1
-        
-        
         return player_instances
-    
     
     def __repr__(self):
         """Allows the player instance to be returned as the players name. 
@@ -84,11 +74,12 @@ class Rank():
     """
     
     def __init__(self):
-        player = Player()
-        self.player_stats = player.player_stats()
+        player_stats = requests.get("https://www.fantasyfootballdatapros.com/api/players/2019/all")
+        player_data = player_stats.json()
         self.rank_points = 0
+        self.player_instance = Player(player_data)
         
-    def position_points(self, player):
+    def position_points(self):
         """This method will find out what the position is 
         and add or take away points to the players value.
         
@@ -102,16 +93,16 @@ class Rank():
             The variable rank_points.
         
         """
-        if self.player_stats[player].position == "QB":
+        if self.player_stats[1] == "QB":
             self.rank_points += 2
             
-        elif self.player_stats[player].position == "RB":
+        elif self.player_stats[1] == "RB":
             self.rank_points += 4
             
-        elif self.player_stats[player].position == "WR":
+        elif self.player_stats[1] == "WR":
             self.rank_points += 3
             
-        elif self.player_stats[player].position == "TE":
+        elif self.player_stats[1] == "TE":
             self.rank_points += 2
             
         return self.rank_points 
@@ -134,11 +125,10 @@ class Rank():
         # player_data = players.json()
         # player_instance = Player(player_data)
         
-        player_dictionary = dict()
         
-
-        for player in self.player_stats.keys():
-            self.rank_points = 0
+        player_dictionary = {}
+        
+        for player in self.player_instance.player_stats():
             #passing yards
             if self.player_stats[player].pass_yd <=500:
                 self.rank_points += 0
@@ -295,20 +285,38 @@ class Rank():
             elif self.player_stats[player].fumbles > 12:
                 self.rank_points -= 4
             
-            self.rank_points += self.position_points(player)
-            
-            player_dictionary[self.player_stats[player]] = self.rank_points
+            player_dictionary[player[1]] = self.rank_points
             
         return player_dictionary
-
+        
+    # #Navigator: Rachel Driver: Sakib 
+    # def rank(self):
+    #     """Append the players to a list of players from most points to
+    #     least points.
+        
+    #     Args:
+    #         self (Rank): A player object that contains the attributes of a players.
+        
+    #     Returns:
+    #         The variable rank_points.
+    #         A dictionary containing the players name and their rank points.
+    
+    #     """
+    #     ranked_dictionary = last_season_stats(self)
+        
+    #     sorted_dictionary = dict(sorted(ranked_dictionary.items(), key=operator.itemgetter(1),reverse=True))
+        
+    #     return sorted_dictionary
 
 def main():
     """Reads in the API and sets it equal to a variable called players.
     
     """
+    # api = requests.get('https://www.fantasyfootballdatapros.com/api/players/2019/all')
+    # players = api.json()
+
+    # player_instance = Player(players)
     rank = Rank()
-    #print(rank.last_season_stats())
-    
-    
+    print(rank.last_season_stats())
 if __name__ == "__main__":
     main()

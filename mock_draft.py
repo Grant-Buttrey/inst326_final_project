@@ -25,8 +25,8 @@ def draft_round(player_dict):
     """
     unsorted_ranks = list()
     
-    for player in player_dict.keys:
-        unsorted_ranks.append(player,player_dict[player])
+    for player in player_dict.keys():
+        unsorted_ranks.append((player,player_dict[player]))
     
     sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
     
@@ -34,9 +34,9 @@ def draft_round(player_dict):
     
     for index in range(len(sorted_ranks)):
         if((index/8)+1 in draft_dict.keys()):
-            draft_dict[(index/8)+1].append(sorted_ranks[index][0])
+            draft_dict[(index/8)+1].append(sorted_ranks[index][0].name)
         else:
-            draft_dict[(index/8)+1] = list(sorted_ranks[index][0])
+            draft_dict[(index/8)+1] = list(sorted_ranks[index][0].name)
             
         return draft_dict
 
@@ -51,3 +51,8 @@ def mock_draft(draft_dict):
     
     #github testing
     
+
+if __name__ == "__main__":
+    rank = ranks.Rank()
+    player_dict = rank.last_season_stats()
+    print(draft_round(player_dict))
