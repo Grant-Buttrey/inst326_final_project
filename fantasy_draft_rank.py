@@ -35,7 +35,7 @@ class Player():
         player_stats = requests.get("https://www.fantasyfootballdatapros.com/api/players/2019/all")
         self.player_data = player_stats.json()
         
-        
+    #Driver: Rachel Navigator: William    
     def player_stats(self):
         """Creates a list of player instances and appends players statistics to
         the list.
@@ -86,7 +86,7 @@ class Rank():
         player = Player()
         self.player_stats = player.player_stats()
         self.rank_points = 0
-        
+    #Driver: Sakib Navigator: Grant  
     def position_points(self, player):
         """This method will find out what the position is 
         and add or take away points to the players value.
@@ -301,7 +301,7 @@ class Rank():
             
         return player_dictionary
 
-
+#Driver: William Navigator: Rachel
 def main():
     """Reads in the API and sets it equal to a variable called players.
     
