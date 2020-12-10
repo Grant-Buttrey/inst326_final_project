@@ -13,13 +13,16 @@ class League():
         stats = df["stats"] 
         counter = 0
         fumble_list = df["fumbles_lost"]
+        pos_list = df["position"]
 
         for i in df["player_name"]:
             self.player_dict[i] = stats[counter]
 
             self.player_dict[i]["fumbles"] = fumble_list[counter]
+            self.player_dict[i]["position"] = pos_list[counter]
             counter+=1
-        print(self.player_dict["Lamar Jackson"])
+        #print(self.player_dict["Lamar Jackson"])
+        
 '''
 class Player():
     """This class with gather all of the statistics for each player in the api.
@@ -35,7 +38,7 @@ class Player():
         rushing_yd (float): The amount of rushing yards in the 2019 season.
         fumbles (float): The amount of fumbles lost in the 2019 season.
         
-    """
+
     def __init__(self,player_name, position, pass_yd, pass_td, receiving_td, receiving_yd, rushing_yd, rushing_td, fumbles):     
         self.name = player_name
         self.position = position
@@ -74,18 +77,19 @@ class Player():
         
         """
         return self.name
-    
+'''
+
 class Rank():
     """This class will rank the players from best to worst based on their 
     statistics from the 2019 season.
-    
     """
     
-    def __init__(self, player_instance):
-        self.player_stats = Player.player_stats(player_instance)
-        self.rank_points = 0
+    def __init__(self, df):
+        ranked_league = League(df)
+        self.roster = ranked_league.player_dict
+
                
-    def position_points(self):
+    def position_points(self, position):
         """This method will find out what the position is 
         and add or take away points to the players value.
         
@@ -99,21 +103,22 @@ class Rank():
             The variable rank_points.
         
         """
-        if self.player_stats[1] == "QB":
-            self.rank_points += 2
+        rank_points = 0
+        if position == "QB":
+            rank_points += 2
             
-        elif self.player_stats[1] == "RB":
-            self.rank_points += 4
+        elif position == "RB":
+            rank_points += 4
             
-        elif self.player_stats[1] == "WR":
-            self.rank_points += 3
+        elif position == "WR":
+            rank_points += 3
             
-        elif self.player_stats[1] == "TE":
-            self.rank_points += 2
+        elif position == "TE":
+            rank_points += 2
             
-        return self.rank_points 
+        return rank_points 
     
-    def last_season_stats(self):
+    def last_season_stats(self, player_name):
         """This method will categorize the players stats and 
         add or take away points to the players value. 
         
@@ -127,168 +132,187 @@ class Rank():
             The variable rank_points.
             
         """
-        player_dictionary = {}
-        
-        for player in self.player_stats:
-            #passing yards
-            if player[2] <=500:
-                self.rank_points += 0
-            elif player[2] > 500 and player[2] <= 1000:
-                self.rank_points += 1
-            elif player[2] > 1000 and player[2] <= 1500:
-                self.rank_points += 2
-            elif player[2] > 1500 and player[2] <= 2000:
-                self.rank_points += 3
-            elif player[2] > 2000 and player[2] <= 2500:
-                self.rank_points += 4
-            elif player[2] > 2500 and player[2] <= 3000:
-                self.rank_points += 5
-            elif player[2] > 3000 and player[2] <= 3500:
-                self.rank_points += 6
-            elif player[2] > 3500 and player[2] <= 4000:
-                self.rank_points += 7
-            elif player[2] > 4000 and player[2] <= 4500:
-                self.rank_points += 8
-            elif player[2] > 4500 and player[2] <= 5000:
-                self.rank_points += 9
-            elif player[2] >= 5000:
-                self.rank_points += 10
+        rank_points = 0
+        player = self.roster[player_name]
+        #passing yards
+        if player["passing"]["passing_yds"] <=500:
+            rank_points += 0
+        elif player["passing"]["passing_yds"] > 500 and player["passing"]["passing_yds"] <= 1000:
+            rank_points += 1
+        elif player["passing"]["passing_yds"] > 1000 and player["passing"]["passing_yds"] <= 1500:
+            rank_points += 2
+        elif player["passing"]["passing_yds"] > 1500 and player["passing"]["passing_yds"] <= 2000:
+            rank_points += 3
+        elif player["passing"]["passing_yds"] > 2000 and player["passing"]["passing_yds"] <= 2500:
+            rank_points += 4
+        elif player["passing"]["passing_yds"] > 2500 and player["passing"]["passing_yds"] <= 3000:
+            rank_points += 5
+        elif player["passing"]["passing_yds"] > 3000 and player["passing"]["passing_yds"] <= 3500:
+            rank_points += 6
+        elif player["passing"]["passing_yds"] > 3500 and player["passing"]["passing_yds"] <= 4000:
+            rank_points += 7
+        elif player["passing"]["passing_yds"] > 4000 and player["passing"]["passing_yds"] <= 4500:
+            rank_points += 8
+        elif player["passing"]["passing_yds"] > 4500 and player["passing"]["passing_yds"]<= 5000:
+            rank_points += 9
+        elif player["passing"]["passing_yds"] >= 5000:
+            rank_points += 10
 
-            #passing touchdowns
-            if player[3] <= 5:
-                self.rank_points += 0
-            elif player[3] > 5 and player[3] <= 10:
-                self.rank_points += 1
-            elif player[3] > 10 and player[3] <= 15:
-                self.rank_points += 2
-            elif player[3] > 15 and player[3] <= 20:
-                self.rank_points += 3
-            elif player[3] > 20 and player[3] <= 25:
-                self.rank_points += 4
-            elif player[3] > 25 and player[3] <= 30:
-                self.rank_points += 5
-            elif player[3] >= 30:
-                self.rank_points += 6
+        #passing touchdowns
+        if player["passing"]["passing_td"] <= 5:
+            rank_points += 0
+        elif player["passing"]["passing_td"] > 5 and player["passing"]["passing_td"] <= 10:
+            rank_points += 1
+        elif player["passing"]["passing_td"] > 10 and player["passing"]["passing_td"] <= 15:
+            rank_points += 2
+        elif player["passing"]["passing_td"] > 15 and player["passing"]["passing_td"] <= 20:
+            rank_points += 3
+        elif player["passing"]["passing_td"] > 20 and player["passing"]["passing_td"] <= 25:
+            rank_points += 4
+        elif player["passing"]["passing_td"] > 25 and player["passing"]["passing_td"] <= 30:
+            rank_points += 5
+        elif player["passing"]["passing_td"] >= 30:
+            rank_points += 6
+        
+        rushing_points = 0
+        
+        #rushing yards 
+        if player["rushing"]["rushing_yds"] <= 200:
+            rushing_points += 1 
+        elif player["rushing"]["rushing_yds"] > 200 and player["rushing"]["rushing_yds"] <= 400:
+            rushing_points += 2
+        elif player["rushing"]["rushing_yds"] > 400 and player["rushing"]["rushing_yds"] <= 600:
+            rushing_points += 3
+        elif player["rushing"]["rushing_yds"] > 600 and player["rushing"]["rushing_yds"] <= 800:
+            rushing_points += 4
+        elif player["rushing"]["rushing_yds"] > 800 and player["rushing"]["rushing_yds"]<= 1000:
+            rushing_points += 5
+        elif player["rushing"]["rushing_yds"] > 1000 and player["rushing"]["rushing_yds"] <= 1200:
+            rushing_points += 6
+        elif player["rushing"]["rushing_yds"] > 1200 and player["rushing"]["rushing_yds"] <= 1400:
+            rushing_points += 7
+        elif player["rushing"]["rushing_yds"] > 1400 and player["rushing"]["rushing_yds"] <= 1600:
+            rushing_points += 8
+        elif player["rushing"]["rushing_yds"] > 1600 and player["rushing"]["rushing_yds"] <= 1800:
+            rushing_points += 9
+        elif player["rushing"]["rushing_yds"] > 1800 and player["rushing"]["rushing_yds"] <= 2000:
+            rushing_points += 10
+        
+        #extra value for qb rushing yards
+        if player["position"] == "QB":
+            rank_points += rushing_points * 1.2
+        else:
+            rank_points += rushing_points
+        
+        rushing_td = 0
+        
+        #rushing touchdown
+        if player["rushing"]["rushing_td"] <= 3:
+            rushing_td += 1
+        elif player["rushing"]["rushing_td"] > 3 and player["rushing"]["rushing_td"] <= 6:
+            rushing_td += 2
+        elif player["rushing"]["rushing_td"] > 6 and player["rushing"]["rushing_td"] <= 9:
+            rushing_td += 3
+        elif player["rushing"]["rushing_td"] > 9 and player["rushing"]["rushing_td"] <= 12:
+            rushing_td += 4
+        elif player["rushing"]["rushing_td"] > 12 and player["rushing"]["rushing_td"] <= 15:
+            rushing_td += 5
+        elif player["rushing"]["rushing_td"] >= 16:
+            rushing_td += 6
+        
+        #extra value for qb rushing touchdowns
+        if player["position"] == "QB":
+            rank_points += rushing_td * 1.2
+        else:
+            rank_points += rushing_td
+        
+        recieving_yards = 0
+        
+        #receiving yards
+        if player["receiving"]["receiving_yds"] <= 180:
+            recieving_yards += 1
+        elif player["receiving"]["receiving_yds"] > 180 and player["receiving"]["receiving_yds"] <= 360:
+            recieving_yards += 2
+        elif player["receiving"]["receiving_yds"] > 360 and player["receiving"]["receiving_yds"] <= 540:
+            recieving_yards += 3
+        elif player["receiving"]["receiving_yds"] > 540 and player["receiving"]["receiving_yds"] <= 720:
+            recieving_yards += 4
+        elif player["receiving"]["receiving_yds"] > 720 and player["receiving"]["receiving_yds"] <= 900:
+            recieving_yards += 5
+        elif player["receiving"]["receiving_yds"] > 900 and player["receiving"]["receiving_yds"] <= 1080:
+            recieving_yards += 6
+        elif player["receiving"]["receiving_yds"] > 1080 and player["receiving"]["receiving_yds"] <= 1260:
+            recieving_yards += 7
+        elif player["receiving"]["receiving_yds"] > 1260 and player["receiving"]["receiving_yds"] <= 1440:
+            recieving_yards += 8
+        elif player["receiving"]["receiving_yds"] > 1440 and player["receiving"]["receiving_yds"] <= 1620:
+            recieving_yards += 9
+        elif player["receiving"]["receiving_yds"] > 1620 and player["receiving"]["receiving_yds"] <= 1800:
+            recieving_yards += 10
+        
+        #extra value for qb receiving yards
+        if player["position"] == "RB":
+            rank_points += recieving_yards * 1.2
+        else:
+            rank_points += recieving_yards
+        
+        recieving_touchdowns = 0
+        
+        #receiving touchdowns
+        if player["receiving"]["receiving_td"] <= 2:
+            recieving_touchdowns += 1
+        elif player["receiving"]["receiving_td"] > 2 and player["receiving"]["receiving_td"] <= 4:
+            recieving_touchdowns += 2
+        elif player["receiving"]["receiving_td"] > 4 and player["receiving"]["receiving_td"] <= 6:
+            recieving_touchdowns += 3
+        elif player["receiving"]["receiving_td"] > 6 and player["receiving"]["receiving_td"] <= 8:
+            recieving_touchdowns += 4
+        elif player["receiving"]["receiving_td"] > 8 and player["receiving"]["receiving_td"] <= 10:
+            recieving_touchdowns += 5
+        elif player["receiving"]["receiving_td"] > 10:
+            recieving_touchdowns += 6
+        
+        #extra value for RB receiving yards
+        if player["position"] == "RB":
+            rank_points += recieving_touchdowns * 1.2
+        else:
+            rank_points += recieving_touchdowns
+        
+        #fumbles
+        if player["fumbles"] <= 3:
+            rank_points -= 0
+        elif player["fumbles"] > 3 and player["fumbles"] <= 6:
+            rank_points -= 1
+        elif player["fumbles"] > 6 and player["fumbles"] <= 9:
+            rank_points -= 2
+        elif player["fumbles"] > 9 and player["fumbles"] <= 12:
+            rank_points -= 3
+        elif player["fumbles"] > 12:
+            rank_points -= 4
             
-            rushing_points = 0
-            
-            #rushing yards 
-            if player[6] <= 200:
-                rushing_points += 1 
-            elif player[6] > 200 and player[4] <= 400:
-                rushing_points += 2
-            elif player[6] > 400 and player[4] <= 600:
-                rushing_points += 3
-            elif player[6] > 600 and player[4] <= 800:
-                rushing_points += 4
-            elif player[6] > 800 and player[4] <= 1000:
-                rushing_points += 5
-            elif player[6] > 1000 and player[4] <= 1200:
-                rushing_points += 6
-            elif player[6] > 1200 and player[4] <= 1400:
-                rushing_points += 7
-            elif player[6] > 1400 and player[4] <= 1600:
-                rushing_points += 8
-            elif player[6] > 1600 and player[4] <= 1800:
-                rushing_points += 9
-            elif player[6] > 1800 and player[4] <= 2000:
-                rushing_points += 10
-            
-            #extra value for qb rushing yards
-            if player[1] == "QB":
-                self.rank_points += rushing_points * 1.2
-            else:
-                self.rank_points += rushing_points
-            
-            rushing_td = 0
-            
-            #rushing touchdown
-            if player[7] <= 3:
-                rushing_td += 1
-            elif player[7] > 3 and player[7] <= 6:
-                rushing_td += 2
-            elif player[7] > 6 and player[7] <= 9:
-                rushing_td += 3
-            elif player[7] > 9 and player[7] <= 12:
-                rushing_td += 4
-            elif player[7] > 12 and player[7] <= 15:
-                rushing_td += 5
-            elif player[7] >= 16:
-                rushing_td += 6
-            
-            #extra value for qb rushing touchdowns
-            if player[1] == "QB":
-                self.rank_points += rushing_td * 1.2
-            else:
-                self.rank_points += rushing_td
-            
-            recieving_yards = 0
-            
-            #receiving yards
-            if player[5] <= 180:
-                recieving_yards += 1
-            elif player[5] > 180 and player[5] <= 360:
-                recieving_yards += 2
-            elif player[5] > 360 and player[5] <= 540:
-                recieving_yards += 3
-            elif player[5] > 540 and player[5] <= 720:
-                recieving_yards += 4
-            elif player[5] > 720 and player[5] <= 900:
-                recieving_yards += 5
-            elif player[5] > 900 and player[5] <= 1080:
-                recieving_yards += 6
-            elif player[5] > 1080 and player[5] <= 1260:
-                recieving_yards += 7
-            elif player[5] > 1260 and player[5] <= 1440:
-                recieving_yards += 8
-            elif player[5] > 1440 and player[5] <= 1620:
-                recieving_yards += 9
-            elif player[5] > 1620 and player[5] <= 1800:
-                recieving_yards += 10
-            
-            #extra value for qb receiving yards
-            if player[1] == "RB":
-                self.rank_points += recieving_yards * 1.2
-            else:
-                self.rank_points += recieving_yards
-            
-            recieving_touchdowns = 0
-            
-            #receiving touchdowns
-            if player[4] <= 2:
-                recieving_touchdowns += 1
-            elif player[4] > 2 and self.player_stats[4] <= 4:
-                recieving_touchdowns += 2
-            elif player[4] > 4 and self.player_stats[4] <= 6:
-                recieving_touchdowns += 3
-            elif player[4] > 6 and self.player_stats[4] <= 8:
-                recieving_touchdowns += 4
-            elif player[4] > 8 and self.player_stats[4] <= 10:
-                recieving_touchdowns += 5
-            elif player[4] > 10:
-                recieving_touchdowns += 6
-            
-            #extra value for RB receiving yards
-            if player[1] == "RB":
-                self.rank_points += recieving_touchdowns * 1.2
-            else:
-                self.rank_points += recieving_touchdowns
-            
-            #fumbles
-            if player[8] <= 3:
-                self.rank_points -= 0
-            elif player[8] > 3 and player[8] <= 6:
-                self.rank_points -= 1
-            elif player[8] > 6 and player[8] <= 9:
-                self.rank_points -= 2
-            elif player[8] > 9 and player[8] <= 12:
-                self.rank_points -= 3
-            elif player[8] > 12:
-                self.rank_points -= 4
-            
-            player_dictionary[player[1]] = self.rank_points
-            
-        return player_dictionary
+
+        interception_points = 0 
+
+        if player["passing"]["int"] <= 5:
+            interception_points += 0
+        elif player["passing"]["int"] > 5 and player["passing"]["int"] <= 10:
+            interception_points += 2
+        elif player["passing"]["int"] > 10 and player["passing"]["int"] <= 15:
+            interception_points += 4
+        elif player["passing"]["int"] > 15 and player["passing"]["int"] <= 20:
+            interception_points += 6
+        elif player["passing"]["int"] > 20 and player["passing"]["int"] <= 25:
+            interception_points += 8
+        elif player["passing"]["int"] > 25 and player["passing"]["int"] <= 30:
+            interception_points += 50
+        elif player["passing"]["int"] > 30:
+            interception_points += 50
+
+        rank_points -= interception_points
+        rank_points += self.position_points(player["position"])
+        
+        return rank_points        
+
         
     #Navigator: Rachel Driver: Sakib 
     def rank(self):
@@ -308,15 +332,15 @@ class Rank():
         sorted_dictionary = dict(sorted(ranked_dictionary.items(), key=operator.itemgetter(1),reverse=True))
         
         return sorted_dictionary
-'''
+
 def main():
     """Reads in the API and sets it equal to a variable called players.
     
     """
     data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
     df = pd.DataFrame(data)
-    league = League(df)
-    
+    rank = Rank(df)
+    print(rank.roster)
 
 if __name__ == "__main__":
     main()
