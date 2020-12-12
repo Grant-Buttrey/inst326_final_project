@@ -4,7 +4,8 @@ This Program will run an 8 man mock draft.
 
 import fantasy_draft_rank as ranks
 import pandas as pd
-import test
+import fantasy_draft_rank
+import random 
 
 #Driver: Grant Navigator: Sakib
 def second(tup):
@@ -27,7 +28,7 @@ def draft_round(player_df):
         The dictionary draft_dict. 
     
     """
-    ranked = test.Rank(player_df)
+    ranked = fantasy_draft_rank.Rank(player_df)
     unsorted_ranks = list()
     
     key_list = list(ranked.roster.keys())
@@ -59,9 +60,47 @@ def mock_draft():
     data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
     df = pd.DataFrame(data)
     
-    print(draft_round(df))
+    current_round = 1
+    computer = 1
     
-    #github testing
+    draft_player = []
+    
+    draft_order = {}
+    
+    while computer <= 8:
+        draft_player.extend([f"Computer {computer}"])
+        computer += 1
+        
+    #draft_player.append([f"User1"])
+    
+    draft_pick = random.randint(1,8)
+
+    draft_player[draft_pick] = "user 1"
+
+    counter = 1
+    
+    for i in draft_player:
+        draft_order[counter] = i
+        counter += 1
+        
+    roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None, "Bench1" : None, "Bench2" : None, 
+              "Bench3" : None, "Bench4" : None, "Bench5" : None, "Bench6" : None}
+    
+    players_ranked = draft_round(df)
+    
+    # while current_round <= 14:
+    #     for player in draft_order:
+    #         if player == "user 1":
+    #                 continue
+    #         else:
+    #             for nfl_player in players_ranked:
+                    
+                
+                    
+    
+    # print(draft_round(df))
+    
+    
     
 
 if __name__ == "__main__":
