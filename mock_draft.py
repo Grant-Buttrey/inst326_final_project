@@ -85,11 +85,10 @@ def mock_draft():
         draft_order[counter] = i
         counter += 1
         
-    roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None, "Bench1" : None, "Bench2" : None, 
-              "Bench3" : None, "Bench4" : None, "Bench5" : None, "Bench6" : None}
+    roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
     
-    for i in draft_order:
-        new_roster[i.value] = roster
+    # for i in draft_order:
+    #     new_roster[i.value] = roster
         
     players_ranked = draft_round(df)
     
@@ -99,6 +98,8 @@ def mock_draft():
                 pick = input("Make your selection!")
                 for nfl_player in players_ranked:
                     if nfl_player == pick:
+                        if nfl_player
+                        
                         
             else:
                 for nfl_player in players_ranked:
