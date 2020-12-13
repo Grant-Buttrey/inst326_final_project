@@ -102,6 +102,7 @@ def mock_draft():
     roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
     print(draft_order)
   
+  idk what is going on
     
     players_ranked = draft_round(df)
     print("108")
