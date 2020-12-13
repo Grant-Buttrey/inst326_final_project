@@ -46,6 +46,13 @@ def draft_round(player_df):
         else:
             draft_dict[((index//8)+1)] = list()
             draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
+
+ 
+    
+    #print(playerName_position)
+    #print(playerName_position["Lamar Jackson"])
+    #print(playerName_position.values())
+    
             
     return draft_dict
 
@@ -57,8 +64,15 @@ def mock_draft():
         draft_dict (dict): A dictionary containing the players information. 
         
     """
+  
+        
     data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
     df = pd.DataFrame(data)
+    
+    ranked = fantasy_draft_rank.Rank(df)
+    playerName_position = {}
+    for j in ranked.roster:
+        playerName_position[j]= ranked.roster[j]["position"]
     
     current_round = 1
     computer = 1
@@ -73,8 +87,8 @@ def mock_draft():
         draft_player.extend([f"Computer {computer}"])
         computer += 1
         
-    #draft_player.append([f"User1"])
-    
+    draft_player.append([f"User1"])
+    players_ranked = draft_round(df)
     draft_pick = random.randint(1,8)
 
     draft_player[draft_pick] = "user 1"
@@ -84,34 +98,65 @@ def mock_draft():
     for i in draft_player:
         draft_order[counter] = i
         counter += 1
-        
+   
     roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
+    print(draft_order)
+  
     
-    # for i in draft_order:
-    #     new_roster[i.value] = roster
-        
     players_ranked = draft_round(df)
-    
+    print("108")
     while current_round <= 14:
+        print("110")
         for player in draft_order:
-            if player == "user 1":
+            print("112")
+            if player == "[user 1]":
+                print("114")
                 pick = input("Make your selection!")
                 for nfl_player in players_ranked:
                     if nfl_player == pick:
-                        if nfl_player
-                        
-                        
+                        for j in playerName_position:
+                            if playerName_position[pick] == "QB":
+                                roster["QB"] = pick
+                            elif playerName_position[pick] == "RB":
+                                if roster["RB1"] == None:
+                                    roster["RB1"] = pick
+                                elif roster["RB2"] == None:
+                                    roster["RB2"] = pick
+                                elif roster["Flex1"] == None:
+                                    roster["Flex1"] = pick
+                                elif roster["Flex2"] == None:
+                                    roster["Flex2"] = pick
+                                else:
+                                    print("Position filled")
+                                    pick = input("Make a different available selection!")
+                            if playerName_position[pick] == "WR":
+                                if roster["WR1"] == None:
+                                    roster["WR1"] = pick
+                                elif roster["WR2"] == None:
+                                    roster["WR2"] = pick
+                                elif roster["Flex1"] == None:
+                                    roster["Flex1"] = pick
+                                elif roster["Flex2"] == None:
+                                    roster["Flex2"] = pick
+                                else:
+                                    print("Position filled")
+                                    pick = input("Make a different available selection!")
+                            if playerName_position[pick] == "TE":
+                                if roster["TE"] == None:
+                                    roster["TE"] = pick
+                                elif roster["Flex1"] == None:
+                                    roster["Flex1"] = pick
+                                elif roster["Flex2"] == None:
+                                    roster["Flex2"] = pick
+                                else:
+                                    print("Position filled")
+                                    pick = input("Make a different available selection!")
             else:
-                for nfl_player in players_ranked:
-                    
-                    
-                
-                    
-    
-    # print(draft_round(df))
-    
-    
-    
+                continue
+        current_round += 1
+
+    print(new_roster)
 
 if __name__ == "__main__":
     mock_draft()
+    
