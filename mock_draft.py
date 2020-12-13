@@ -67,6 +67,8 @@ def mock_draft():
     
     draft_order = {}
     
+    new_roster = {}
+    
     while computer <= 8:
         draft_player.extend([f"Computer {computer}"])
         computer += 1
@@ -86,14 +88,21 @@ def mock_draft():
     roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None, "Bench1" : None, "Bench2" : None, 
               "Bench3" : None, "Bench4" : None, "Bench5" : None, "Bench6" : None}
     
+    for i in draft_order:
+        new_roster[i.value] = roster
+        
     players_ranked = draft_round(df)
     
-    # while current_round <= 14:
-    #     for player in draft_order:
-    #         if player == "user 1":
-    #                 continue
-    #         else:
-    #             for nfl_player in players_ranked:
+    while current_round <= 14:
+        for player in draft_order:
+            if player == "user 1":
+                pick = input("Make your selection!")
+                for nfl_player in players_ranked:
+                    if nfl_player == pick:
+                        
+            else:
+                for nfl_player in players_ranked:
+                    
                     
                 
                     
