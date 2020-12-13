@@ -21,6 +21,7 @@ class League():
             self.player_dict[i]["fumbles"] = fumble_list[counter]
             self.player_dict[i]["position"] = pos_list[counter]
             counter+=1
+
         #print(self.player_dict["Lamar Jackson"])
         
 '''
