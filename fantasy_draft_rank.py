@@ -6,6 +6,7 @@ import re
 import requests
 import operator
 import pandas as pd
+import pprint
 
 class League():
     def __init__(self, df):
@@ -20,7 +21,6 @@ class League():
 
             self.player_dict[i]["fumbles"] = fumble_list[counter]
             self.player_dict[i]["position"] = pos_list[counter]
-            self.player_dict[i]["rank_points"] = None
             counter+=1
 
         #print(self.player_dict["Lamar Jackson"])
@@ -32,10 +32,15 @@ class Rank():
     """
     
     def __init__(self, df):
-        ranked_league = League(df)
-        self.roster = ranked_league.player_dict
+        self.ranked_league = League(df)
+        self.roster = self.ranked_league.player_dict
+        self.frame = df
+        
+        for i in df["player_name"]:
+            self.roster[i]["rank_points"] = 0
+        #self.rank_points = ranked_league.player_dict[i]["rank_points"]
                
-    def position_points(self, position):
+    def position_points(self):                                 #TAKES POSITION AS ARG
         """This method will find out what the position is 
         and add or take away points to the players value.
         
@@ -49,20 +54,72 @@ class Rank():
             The variable self.rank_points.
         
         """
-        self.rank_points = 0
-        if position == "QB":
-            self.rank_points += 2
+        #self.ranked_league.player_dict[self.player]["rank_points"] = 0
+        
+        
+        for i in self.frame["player_name"]:
             
-        elif position == "RB":
-            self.rank_points += 9.5
+        
+            if self.roster[i]["position"] == "QB":
+                self.roster[i]["rank_points"] += 2
+                
+            elif self.roster[i]["position"] == "RB":
+                self.roster[i]["rank_points"] += 9.5
+                
+            elif self.roster[i]["position"] == "WR":
+                self.roster[i]["rank_points"] += 8
+                
+            elif self.roster[i]["position"] == "TE":
+                self.roster[i]["rank_points"] += 5
+                
+                
             
-        elif position == "WR":
-            self.rank_points += 8
+                
+                
+                
+                
+                
+                
+                
+                
+        #passing yards
+        
+        
+        
+            if self.roster[i]["passing"]["passing_yds"] <=500:
+                self.roster[i]["rank_points"] += 0
             
-        elif position == "TE":
-            self.rank_points += 5
+            elif self.roster[i]["passing"]["passing_yds"] > 500 and self.roster[i]["passing"]["passing_yds"] <= 1000:
+                self.roster[i]["rank_points"] += 0
             
-        return self.rank_points 
+            elif self.roster[i]["passing"]["passing_yds"] > 1000 and self.roster[i]["passing"]["passing_yds"] <= 1500:
+                self.roster[i]["rank_points"] += 0
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 1500 and self.roster[i]["passing"]["passing_yds"] <= 2000:
+                self.roster[i]["rank_points"] += 0
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 2000 and self.roster[i]["passing"]["passing_yds"] <= 2500:
+                self.roster[i]["rank_points"] += 4
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 2500 and self.roster[i]["passing"]["passing_yds"] <= 3000:
+                self.roster[i]["rank_points"] += 5
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 3000 and self.roster[i]["passing"]["passing_yds"] <= 3500:
+                self.roster[i]["rank_points"] += 6
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 3500 and self.roster[i]["passing"]["passing_yds"] <= 4000:
+                self.roster[i]["rank_points"] += 6
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 4000 and self.roster[i]["passing"]["passing_yds"] <= 4500:
+                self.roster[i]["rank_points"] += 7
+            
+            elif self.roster[i]["passing"]["passing_yds"] > 4500 and self.roster[i]["passing"]["passing_yds"]<= 5000:
+                self.roster[i]["rank_points"] += 8
+            
+            elif self.roster[i]["passing"]["passing_yds"] >= 5000:
+                self.roster[i]["rank_points"] += 9
+            
+
     
     def last_season_stats(self, player_name):
         """This method will categorize the players stats and 
@@ -91,7 +148,7 @@ class Rank():
             self.rank_points += 0
         elif player["passing"]["passing_yds"] > 2000 and player["passing"]["passing_yds"] <= 2500:
             self.rank_points += 4
-        elif player["passing"]["passing_yds"] > 2500 and player["passing"]["passing_yds"] <= 3000:
+        elif player["passing"]["passing_yds"] > 2500 and player["passing"]["passing_yds"] <= 3000:              #DONE
             self.rank_points += 5
         elif player["passing"]["passing_yds"] > 3000 and player["passing"]["passing_yds"] <= 3500:
             self.rank_points += 6
@@ -255,31 +312,31 @@ class Rank():
             interception_points += 12
 
         self.rank_points -= interception_points
-        self.rank_points += self.position_points(player["position"])
+        #self.rank_points += self.position_points(player["position"])                              #UNCOMMENT
         
         return self.rank_points        
 
         
     #Navigator: Rachel Driver: Sakib 
-    def rank(self):
-        """Append the players to a list of players from most points to
-        least points.
+    # def rank(self):
+    #     """Append the players to a list of players from most points to
+    #     least points.
         
-        Args:
-            self (Rank): A player object that contains the attributes of a players.
+    #     Args:
+    #         self (Rank): A player object that contains the attributes of a players.
         
-        Returns:
-            The variable self.rank_points.
-            A dictionary containing the players name and their rank points.
+    #     Returns:
+    #         The variable self.rank_points.
+    #         A dictionary containing the players name and their rank points.
     
-        """
-        self.player_dict[i]["rank_points"] = self.rank_points
+    #     """
+    #     #self.player_dict[i]["rank_points"] = self.rank_points
         
-        ranked_dictionary = last_season_stats(self)
+    #     ranked_dictionary = last_season_stats(self)
         
-        sorted_dictionary = dict(sorted(ranked_dictionary.items(), key=operator.itemgetter(1),reverse=True))
+    #     sorted_dictionary = dict(sorted(ranked_dictionary.items(), key=operator.itemgetter(1),reverse=True))
         
-        return sorted_dictionary
+    #     return sorted_dictionary
 
 def main():
     """Reads in the API and sets it equal to a variable called players.
@@ -288,7 +345,9 @@ def main():
     data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
     df = pd.DataFrame(data)
     rank = Rank(df)
-    print(rank.roster)
+    rank.position_points()
+    pprint.pprint(rank.roster["Lamar Jackson"])
+    
 
 if __name__ == "__main__":
     main()
