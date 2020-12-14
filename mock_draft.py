@@ -122,7 +122,12 @@ def mock_draft(df):
         for draft_player in draft_players:
             iterator = 0
             if draft_player.name == "User":
-                selection = input("Make your selection: ")
+                complete = 0
+                while complete == 0:
+                    selection = input("Make your selection: ")
+                    if selection in [Player.player_name for player in players_ranked]:
+                        complete = 1
+
                 #print(repr(selection))
                 for i in range(len(players_ranked)):
                     #print(players_ranked[1].player_name)
@@ -180,8 +185,8 @@ def mock_draft(df):
                                 draft_player.roster["Flex1"] = players_ranked[iterator]
                                 players_ranked.remove(players_ranked[iterator])
                                 iterator -= 1
-                iterator += 1
-                print(draft_player.roster)
+                    iterator += 1
+                # print(draft_player.roster)
             else:
                 iterator = 0
                 for i in range(len(players_ranked)):
@@ -239,7 +244,7 @@ def mock_draft(df):
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
                 iterator += 1
-            #print(draft_player.roster)    
+            print(draft_player.roster)    
     for participant in draft_players:
         print(participant.roster)
 
