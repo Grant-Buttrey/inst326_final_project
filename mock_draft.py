@@ -8,6 +8,15 @@ import fantasy_draft_rank
 import random 
 
 
+class Player():
+    def __init__(self, player_name, position, points):
+        self.player_name = player_name
+        self.position = position
+        self.points = points
+    
+    def __repr__(self):
+        return self.player_name
+
 class Particpant():
     def __init__(self):
         self.name = ""
@@ -36,35 +45,33 @@ def draft_round(player_df):
         The dictionary draft_dict. 
     
     """
-    ranked = fantasy_draft_rank.Rank(player_df).rank()
-    print(ranked)
-    # print(ranked.roster)
-    # unsorted_ranks = list()
+    rank = ranks.Rank(player_df)
+    rank.position_points()
+    unsorted_ranks = list()
     
-    # key_list = list(ranked.roster.keys())
-    # for i in range(len(ranked.roster)):
-    #     temp_points = ranked.last_season_stats(key_list[i])
-    #     unsorted_ranks.append((key_list[i],temp_points))
-    #     print(temp_points)
-    # sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
+    #For each player
+    for i in range(len(player_df)):
+        #Create a player instance
+        temp_player = Player(player_df['player_name'][i],\
+            rank.roster[player_df['player_name'][i]]['position'],\
+            rank.roster[player_df['player_name'][i]]['rank_points'])
+        #Put it in unsorted list with points
+        unsorted_ranks.append((temp_player,temp_player.points))
     
-    # draft_dict = dict()
+    #Sort list by points descending
+    sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
 
-    # for index in range(len(sorted_ranks)):     
-    #     if((index//8)+1 in draft_dict.keys()):
-    #         draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
-    #     else:
-    #         draft_dict[((index//8)+1)] = list()
-    #         draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
+    draft_dict = dict()
 
- 
+    for index in range(len(sorted_ranks)):     
+        if((index//8)+1 in draft_dict.keys()):
+            draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
+        else:
+            draft_dict[((index//8)+1)] = list()
+            draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
     
-    #print(playerName_position)
-    #print(playerName_position["Lamar Jackson"])
-    #print(playerName_position.values())
-    
-            
     return draft_dict
+    
 
 #Driver: Rachel Navigator: Grant
 def mock_draft():
@@ -84,13 +91,15 @@ def mock_draft():
     for j in ranked.roster:
         playerName_position[j]= ranked.roster[j]["position"]
     
-    
     computer = 1
     
     
     particpants = []
     
     draft_players = []
+    user = Particpant()
+    user.name = "User"
+    draft_players.append(user)
     
     draft_order = {}
     
@@ -98,9 +107,9 @@ def mock_draft():
     
     while computer <= 8:
         participant = Particpant()
-        participant.name = "computer"
+        participant.name = f"Computer {computer}"
         draft_players.append(participant)
-        # print(participant.name)s
+        # print(participant.name)
         # print(participant.roster)
         # draft_player.extend([f"Computer {computer}"])
         computer += 1
@@ -117,7 +126,7 @@ def mock_draft():
     for i in draft_players:
         draft_order[counter] = i
         counter += 1
-   
+    
     #roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
     #print(draft_order)
   
@@ -206,7 +215,7 @@ def mock_draft():
                                 continue
                                
     print(participant.roster)
-                    
+    
             # if users["position"]
             # print(participants_dict)
     
@@ -262,11 +271,7 @@ def mock_draft():
     #             continue
     #     current_round += 1
 
-    
+
 if __name__ == "__main__":
     mock_draft()
-    
-    myRank = fantasy_draft_rank.Rank()
-    roster = myRank.position_points()
-    print(roster)
     
