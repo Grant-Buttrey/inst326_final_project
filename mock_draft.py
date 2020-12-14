@@ -37,7 +37,8 @@ def draft_round(player_df):
     
     """
     ranked = fantasy_draft_rank.Rank(player_df).rank()
-    print(ranked)
+    
+    
     # print(ranked.roster)
     # unsorted_ranks = list()
     
@@ -265,4 +266,5 @@ def mock_draft():
     
 if __name__ == "__main__":
     mock_draft()
-    
+    myRank =fantasy_draft_rank.Rank()
+    roster = myRank.position_points()
