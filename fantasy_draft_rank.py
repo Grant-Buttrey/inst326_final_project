@@ -242,7 +242,7 @@ def main():
     df = pd.DataFrame(data)
     rank = Rank(df)
     rank.position_points()
-    pprint.pprint(rank.roster["Travis Kelce"])
+    pprint.pprint(rank.roster)
     
 
 if __name__ == "__main__":

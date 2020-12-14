@@ -45,7 +45,7 @@ def draft_round(player_df):
         The dictionary draft_dict. 
     
     """
-    ranked = fantasy_draft_rank.Rank(player_df).rank()
+    #ranked = fantasy_draft_rank.Rank(player_df).rank()
     
     
     # print(ranked.roster)
@@ -65,21 +65,16 @@ def draft_round(player_df):
     
     #Sort list by points descending
     sorted_ranks = sorted(unsorted_ranks, key=second , reverse=True)
-
-    draft_dict = dict()
-
-    for index in range(len(sorted_ranks)):     
-        if((index//8)+1 in draft_dict.keys()):
-            draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
-        else:
-            draft_dict[((index//8)+1)] = list()
-            draft_dict[((index//8)+1)].append(sorted_ranks[index][0])
     
-    return draft_dict
+    player_list = []
+    for i in sorted_ranks:
+        player_list.append(i[0])
+    
+    return player_list
     
 
 #Driver: Rachel Navigator: Grant
-def mock_draft():
+def mock_draft(df):
     """Simulates an 8 person mock draft. 
     
     Args:
@@ -88,8 +83,8 @@ def mock_draft():
     """
     
         
-    data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
-    df = pd.DataFrame(data)
+    # data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
+    # df = pd.DataFrame(data)
     
     ranked = fantasy_draft_rank.Rank(df)
     playerName_position = {}
@@ -104,7 +99,6 @@ def mock_draft():
     draft_players = []
     user = Particpant()
     user.name = "User"
-    draft_players.append(user)
     
     draft_order = {}
     
@@ -114,118 +108,144 @@ def mock_draft():
         participant = Particpant()
         participant.name = f"Computer {computer}"
         draft_players.append(participant)
-        # print(participant.name)
-        # print(participant.roster)
-        # draft_player.extend([f"Computer {computer}"])
+
         computer += 1
-    # print(particpants)
-        
-    # draft_player.append([f"User1"])
+    
     players_ranked = draft_round(df)
     draft_pick = random.randint(1,8)
-
-    #draft_player[draft_pick] = "user 1"
-
-    counter = 1
-    
-    for i in draft_players:
-        draft_order[counter] = i
-        counter += 1
-    
-    #roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
-    #print(draft_order)
-  
-    # participants_dict = {}
-    
-    # for i in draft_order:
-    #         participants_dict[i] = roster
-    #print(participants_dict)
+    draft_players[draft_pick] = user
+    #print(len(draft_players))
     current_round = 0
-    
-    while current_round < 14:
+    print(draft_pick)
+    while current_round < 8:
         current_round += 1 
         for draft_player in draft_players:
             #print(players_ranked)
-            for players_lists in players_ranked.values():
-                #print(person)
-                # print(players_lists)
-                for nfl_player_name in players_lists:
-                    #print(nfl_player_name)
-                    
-                    for nfl_player_position in playerName_position.values():
-                        #print(nfl_player_position)
-                        
-                        if nfl_player_position == "QB":
+            iterator = 0
+            if draft_player.name == "User":
+                selection = input("Make your selection: ")
+                for i in range(len(players_ranked)):
+                    if selection == players_ranked[i].player_name:
+                        temp_player = players_ranked[i]
+                        if temp_player.position == "QB":
                             if draft_player.roster["QB"] == None:
-                                draft_player.roster["QB"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
-                            elif draft_player.roster["QB"] != None:
-                                continue
-                        elif nfl_player_position == "RB":
-                            # print("Running Back")
-                            print(draft_player.roster["RB1"])
+                                draft_player.roster["QB"] = temp_player
+                                players_ranked.remove(temp_player)
+                                
+                        elif temp_player.position == "RB":
                             if draft_player.roster["RB1"] == None:
-                                draft_player.roster["RB1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["RB1"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] == None:
-                                draft_player.roster["RB2"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
-
+                                draft_player.roster["RB2"] = temp_player
+                                players_ranked.remove(temp_player)
+                                
                             elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] == None:
-                                draft_player.roster["Flex1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
-                                
+                                draft_player.roster["Flex1"] = temp_player
+                                players_ranked.remove(temp_player)
+                        
                             elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
-                                draft_player.roster["Flex2"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["Flex2"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
-                            elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] != None:
-                                continue
-                                
-                        elif nfl_player_position == "WR":
+                        elif temp_player.position == "WR":
                             if draft_player.roster["WR1"] == None:
-                                draft_player.roster["WR1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["WR1"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] == None:
-                                draft_player.roster["WR2"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["WR2"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] == None:
-                                draft_player.roster["Flex1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["Flex1"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
-                                draft_player.roster["Flex2"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["Flex2"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
-                            elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] != None:
-                                continue
-                            
-                        elif nfl_player_position == "TE":
+                        elif temp_player.position == "TE":
                             if draft_player.roster["TE"] == None:
-                                draft_player.roster["TE"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["TE"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] == None:
-                                draft_player.roster["Flex1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
+                                draft_player.roster["Flex1"] = temp_player
+                                players_ranked.remove(temp_player)
                                 
                             elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
-                                draft_player.roster["Flex1"] = nfl_player_name
-                                players_lists.remove(nfl_player_name)
-                                
-                            elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] != None and participant.roster["Flex2"] != None:
-                                continue
-                               
-    print(participant.roster)
+                                draft_player.roster["Flex1"] = temp_player
+                                players_ranked.remove(temp_player)
+            else:
+                for i in range(len(players_ranked)):
+                    if players_ranked[iterator].position == "QB":
+                        if draft_player.roster["QB"] == None:
+                            draft_player.roster["QB"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+
+                    elif players_ranked[iterator].position == "RB":
+                        if draft_player.roster["RB1"] == None:
+                            draft_player.roster["RB1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] == None:
+                            draft_player.roster["RB2"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] == None:
+                            draft_player.roster["Flex1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
+                            draft_player.roster["Flex2"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                    elif players_ranked[iterator].position == "WR":
+                        if draft_player.roster["WR1"] == None:
+                            draft_player.roster["WR1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] == None:
+                            draft_player.roster["WR2"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] == None:
+                            draft_player.roster["Flex1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
+                            draft_player.roster["Flex2"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                    elif players_ranked[iterator].position == "TE":
+                        if draft_player.roster["TE"] == None:
+                            draft_player.roster["TE"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] == None:
+                            draft_player.roster["Flex1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                        elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
+                            draft_player.roster["Flex1"] = players_ranked[iterator]
+                            players_ranked.remove(players_ranked[iterator])
+                            iterator -= 1
+                iterator += 1
+    for participant in draft_players:
+        print(participant.roster)
 
 
 if __name__ == "__main__":
-    mock_draft()
     
-    myRank = fantasy_draft_rank.Rank()
-    roster = myRank.position_points()
-    print(roster)
+    
+    data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
+    df = pd.DataFrame(data)
+    
+    mock_draft(df)
+    # myRank = fantasy_draft_rank.Rank(df)
+    # roster = myRank.position_points()
+    # print(roster)
     
