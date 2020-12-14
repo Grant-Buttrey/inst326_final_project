@@ -266,3 +266,7 @@ def mock_draft():
 if __name__ == "__main__":
     mock_draft()
     
+    myRank = fantasy_draft_rank.Rank()
+    roster = myRank.position_points()
+    print(roster)
+    
