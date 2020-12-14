@@ -3,7 +3,7 @@ This is a script for creating an NFL fantasy draft ranking system.
 """
 
 import re
-import requests 
+import requests
 import operator
 import pandas as pd
 
@@ -20,65 +20,11 @@ class League():
 
             self.player_dict[i]["fumbles"] = fumble_list[counter]
             self.player_dict[i]["position"] = pos_list[counter]
+            self.player_dict[i]["rank_points"] = None
             counter+=1
 
         #print(self.player_dict["Lamar Jackson"])
         
-'''
-class Player():
-    """This class with gather all of the statistics for each player in the api.
-    
-#     Attributes:
-#         player_name (str): The name of the player.
-#         position (str): The position of the player.
-#         pass_td (float): The amount of passing touchdowns in the 2019 season. 
-#         pass_yds (float): The amount of passing yards in the 2019 season.
-#         receiving_td (float): The amount of receiving touchdowns in the 2019 season.
-#         receiving_yd (float): The amount of receiving yards in the 2019 season.
-#         rushing_td (float): The amount of rushing touchdowns in the 2019 season.
-#         rushing_yd (float): The amount of rushing yards in the 2019 season.
-#         fumbles (float): The amount of fumbles lost in the 2019 season.
-        
-
-    def __init__(self,player_name, position, pass_yd, pass_td, receiving_td, receiving_yd, rushing_yd, rushing_td, fumbles):     
-        self.name = player_name
-        self.position = position
-        self.pass_td = pass_td
-        self.pass_yd = pass_yd
-        self.receiving_td = receiving_td
-        self.receiving_yd = receiving_yd
-        self.rushing_td = rushing_td
-        self.rushing_yd = rushing_yd
-        self.fumbles = fumbles
-        
-#     def player_stats(self, player_api):
-#         """Creates a list of player instances and appends players statistics to
-#         the list.
-        
-#         Args:
-#             player_api (json): The api being read in the main function. 
-            
-#         Return:
-#             A list of player instances. 
-        
-#         """
-#         player_instances = []
-    
-#         for i in player_api:
-#             player_instances.append(player_api(i["player_name"], i["position"], i['stats']["passing"]["passing_yds"], i['stats']["passing"]["passing_td"], i['stats']["receiving"]["receiving_td"], i['stats']["receiving"]["receiving_yds"]
-#                                            ,i['stats']["rushing"]["rushing_yds"], i['stats']["rushing"]["rushing_td"], i['fumbles_lost']))
-        
-#         return player_instances
-    
-#     def __repr__(self):
-#         """Allows the player instance to be returned as the players name. 
-        
-#         Returns:
-#             The name of the player.
-        
-        """
-        return self.name
-'''
 
 class Rank():
     """This class will rank the players from best to worst based on their 
@@ -97,26 +43,26 @@ class Rank():
             self (Rank): A player object that contains the attributes of a players. 
         
         Side Effects:
-            rank_points (int): Modifies the value of rank_points.  
+            self.rank_points (int): Modifies the value of self.rank_points.  
             
         Returns:
-            The variable rank_points.
+            The variable self.rank_points.
         
         """
-        rank_points = 0
+        self.rank_points = 0
         if position == "QB":
-            rank_points += 2
+            self.rank_points += 2
             
         elif position == "RB":
-            rank_points += 9.5
+            self.rank_points += 9.5
             
         elif position == "WR":
-            rank_points += 8
+            self.rank_points += 8
             
         elif position == "TE":
-            rank_points += 5
+            self.rank_points += 5
             
-        return rank_points 
+        return self.rank_points 
     
     def last_season_stats(self, player_name):
         """This method will categorize the players stats and 
@@ -126,53 +72,53 @@ class Rank():
             self (Rank): A player object that contains the attributes of a players.
         
         Side Effects:
-            rank_points (int): Modifies the value of rank_points. 
+            self.rank_points (int): Modifies the value of self.rank_points. 
             
         Returns:
-            The variable rank_points.
+            The variable self.rank_points.
             
         """
-        rank_points = 0
+        self.rank_points = 0
         player = self.roster[player_name]
         #passing yards
         if player["passing"]["passing_yds"] <=500:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_yds"] > 500 and player["passing"]["passing_yds"] <= 1000:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_yds"] > 1000 and player["passing"]["passing_yds"] <= 1500:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_yds"] > 1500 and player["passing"]["passing_yds"] <= 2000:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_yds"] > 2000 and player["passing"]["passing_yds"] <= 2500:
-            rank_points += 4
+            self.rank_points += 4
         elif player["passing"]["passing_yds"] > 2500 and player["passing"]["passing_yds"] <= 3000:
-            rank_points += 5
+            self.rank_points += 5
         elif player["passing"]["passing_yds"] > 3000 and player["passing"]["passing_yds"] <= 3500:
-            rank_points += 6
+            self.rank_points += 6
         elif player["passing"]["passing_yds"] > 3500 and player["passing"]["passing_yds"] <= 4000:
-            rank_points += 6
+            self.rank_points += 6
         elif player["passing"]["passing_yds"] > 4000 and player["passing"]["passing_yds"] <= 4500:
-            rank_points += 7
+            self.rank_points += 7
         elif player["passing"]["passing_yds"] > 4500 and player["passing"]["passing_yds"]<= 5000:
-            rank_points += 8
+            self.rank_points += 8
         elif player["passing"]["passing_yds"] >= 5000:
-            rank_points += 9
+            self.rank_points += 9
 
         #passing touchdowns
         if player["passing"]["passing_td"] <= 5:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_td"] > 5 and player["passing"]["passing_td"] <= 10:
-            rank_points += 0
+            self.rank_points += 0
         elif player["passing"]["passing_td"] > 10 and player["passing"]["passing_td"] <= 15:
-            rank_points += 3
+            self.rank_points += 3
         elif player["passing"]["passing_td"] > 15 and player["passing"]["passing_td"] <= 20:
-            rank_points += 4
+            self.rank_points += 4
         elif player["passing"]["passing_td"] > 20 and player["passing"]["passing_td"] <= 25:
-            rank_points += 5
+            self.rank_points += 5
         elif player["passing"]["passing_td"] > 25 and player["passing"]["passing_td"] <= 30:
-            rank_points += 6
+            self.rank_points += 6
         elif player["passing"]["passing_td"] >= 30:
-            rank_points += 7
+            self.rank_points += 7
         
         rushing_points = 0
         
@@ -200,9 +146,9 @@ class Rank():
         
         #extra value for qb rushing yards
         # if player["position"] == "QB":
-        #     rank_points += rushing_points * 1.2
+        #     self.rank_points += rushing_points * 1.2
         # else:
-        rank_points += rushing_points
+        self.rank_points += rushing_points
         
         rushing_td = 0
         
@@ -222,9 +168,9 @@ class Rank():
         
         #extra value for qb rushing touchdowns
         # if player["position"] == "QB":
-        #     rank_points += rushing_td * 1.2
+        #     self.rank_points += rushing_td * 1.2
         # else:
-        rank_points += rushing_td
+        self.rank_points += rushing_td
         
         recieving_yards = 0
         
@@ -252,9 +198,9 @@ class Rank():
         
         #extra value for qb receiving yards
         if player["position"] == "TE":
-            rank_points += recieving_yards * 1.2
+            self.rank_points += recieving_yards * 1.2
         else:
-            rank_points += recieving_yards
+            self.rank_points += recieving_yards
         
         recieving_touchdowns = 0
         
@@ -274,21 +220,21 @@ class Rank():
         
         #extra value for RB receiving yards
         if player["position"] == "TE":
-            rank_points += recieving_touchdowns * 1.2
+            self.rank_points += recieving_touchdowns * 1.2
         else:
-            rank_points += recieving_touchdowns
+            self.rank_points += recieving_touchdowns
         
         #fumbles
         if player["fumbles"] <= 3:
-            rank_points -= 0
+            self.rank_points -= 0
         elif player["fumbles"] > 3 and player["fumbles"] <= 6:
-            rank_points -= 1
+            self.rank_points -= 1
         elif player["fumbles"] > 6 and player["fumbles"] <= 9:
-            rank_points -= 2
+            self.rank_points -= 2
         elif player["fumbles"] > 9 and player["fumbles"] <= 12:
-            rank_points -= 3
+            self.rank_points -= 3
         elif player["fumbles"] > 12:
-            rank_points -= 4
+            self.rank_points -= 4
             
 
         interception_points = 0 
@@ -308,10 +254,10 @@ class Rank():
         elif player["passing"]["int"] > 30:
             interception_points += 12
 
-        rank_points -= interception_points
-        rank_points += self.position_points(player["position"])
+        self.rank_points -= interception_points
+        self.rank_points += self.position_points(player["position"])
         
-        return rank_points        
+        return self.rank_points        
 
         
     #Navigator: Rachel Driver: Sakib 
@@ -323,10 +269,12 @@ class Rank():
             self (Rank): A player object that contains the attributes of a players.
         
         Returns:
-            The variable rank_points.
+            The variable self.rank_points.
             A dictionary containing the players name and their rank points.
     
         """
+        self.player_dict[i]["rank_points"] = self.rank_points
+        
         ranked_dictionary = last_season_stats(self)
         
         sorted_dictionary = dict(sorted(ranked_dictionary.items(), key=operator.itemgetter(1),reverse=True))
