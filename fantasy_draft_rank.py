@@ -74,9 +74,6 @@ class Rank():
                 
                
         #passing yards
-        
-        
-        
             if self.roster[i]["passing"]["passing_yds"] <=500:
                 self.roster[i]["rank_points"] += 0
             
