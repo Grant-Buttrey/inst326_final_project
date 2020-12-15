@@ -118,19 +118,24 @@ def mock_draft(df):
     current_round = 0
     #print(repr(players_ranked[1]))
     while current_round < 8:
+        print("\n\n")
+        print(f"Round: {current_round + 1}")
+        print("Recomendations:\n", players_ranked[0:16])
+        print("\n")
         current_round += 1 
         for draft_player in draft_players:
             iterator = 0
             if draft_player.name == "User":
+                
                 complete = 0
                 while complete == 0:
-                    selection = input("Make your selection: ")
-                    if selection in [Player.player_name for player in players_ranked]:
+                    selection = input("Make your selection: ")                                  #controlled vocab
+                    if selection in [player.player_name for player in players_ranked]:
                         complete = 1
 
                 #print(repr(selection))
                 for i in range(len(players_ranked)):
-                    #print(players_ranked[1].player_name)
+                    #print(players_ranked[iterator].player_name)
                     if selection == players_ranked[iterator].player_name:
                         #print(selection == players_ranked[iterator].player_name)
                         if players_ranked[iterator].position == "QB":
@@ -187,6 +192,7 @@ def mock_draft(df):
                                 iterator -= 1
                     iterator += 1
                 # print(draft_player.roster)
+                #print(draft_player.roster)
             else:
                 iterator = 0
                 for i in range(len(players_ranked)):
@@ -195,57 +201,71 @@ def mock_draft(df):
                             draft_player.roster["QB"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
-
+                            break
                     elif players_ranked[iterator].position == "RB":
                         if draft_player.roster["RB1"] == None:
                             draft_player.roster["RB1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] == None:
                             draft_player.roster["RB2"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] == None:
                             draft_player.roster["Flex1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["RB1"] != None and draft_player.roster["RB2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
                             draft_player.roster["Flex2"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                     elif players_ranked[iterator].position == "WR":
                         if draft_player.roster["WR1"] == None:
                             draft_player.roster["WR1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] == None:
                             draft_player.roster["WR2"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] == None:
                             draft_player.roster["Flex1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["WR1"] != None and draft_player.roster["WR2"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
                             draft_player.roster["Flex2"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                     elif players_ranked[iterator].position == "TE":
                         if draft_player.roster["TE"] == None:
                             draft_player.roster["TE"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] == None:
                             draft_player.roster["Flex1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
+                            break
                         elif draft_player.roster["TE"] != None and draft_player.roster["Flex1"] != None and draft_player.roster["Flex2"] == None:
                             draft_player.roster["Flex1"] = players_ranked[iterator]
                             players_ranked.remove(players_ranked[iterator])
                             iterator -= 1
-                iterator += 1
-            print(draft_player.roster)    
+                            break
+                
+                    iterator += 1
+            print(draft_player.roster)
+    print("\n\nFinal Rosters:")
     for participant in draft_players:
+        print(participant.name)
         print(participant.roster)
 
 
