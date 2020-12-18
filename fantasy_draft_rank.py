@@ -9,6 +9,7 @@ import pandas as pd
 import pprint
 
 class League():
+    #Driver: Sakib Navigator: Grant
     def __init__(self, df):
         self.player_dict= {}
         stats = df["stats"] 
@@ -32,6 +33,7 @@ class Rank():
     """
     
     def __init__(self, df):
+        #Driver: Rachel Navigator: William
         self.ranked_league = League(df)
         self.roster = self.ranked_league.player_dict
         self.frame = df
@@ -41,6 +43,7 @@ class Rank():
         #self.rank_points = ranked_league.player_dict[i]["rank_points"]
                
     def position_points(self):                                 #TAKES POSITION AS ARG
+        #Driver: William Navigator: Grant
         """This method will find out what the position is 
         and add or take away points to the players value.
         
