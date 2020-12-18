@@ -9,22 +9,49 @@ import random
 
 
 class Player():
+    """
+    Creates obects that contains the player's information
+    Attributes:
+        player_name (string): the NFL player's name
+        position (string): the NFL player's position
+        points (float or int): the NFL player's points from the ranking system
+    """
+    #Driver: Grant Navigator: Willaim
     def __init__(self, player_name, position, points):
+        """An initializer method that initializes the attributes of Player
+        Arguments:
+            player_name (string): the NFL player's name
+            position (string): the NFL player's position
+            points (float or int): the NFL player's points from the ranking system
+        """
+        
         self.player_name = player_name
         self.position = position
         self.points = points
-    
+    #Driver: Sakib Navigator: Rachel
     def __repr__(self):
+        """A repr method that displays the NFL player's name
+        Returns:
+            player_name (String): The NFL player's name
+        """
         return self.player_name
 
 class Particpant():
+    """
+    A class that is the object for each participant in the mock draft
+    Attributes:
+        name (String): The type of participant
+        roster (dictionary): A dictionary to be filled with the participant's fantasy roster
+    """
+    #Driver: William Navigator: Rachel
     def __init__(self):
+        """
+        assigns an empty string to name and creates a dictionary for the roster
+        """
         self.name = ""
         self.roster = {"QB" : None, "RB1" : None, "RB2" : None, "WR1" : None, "WR2" : None, "TE" : None, "Flex1" : None, "Flex2" : None}
         
-    
-
-#Driver: Grant Navigator: Sakib
+#Driver: Grant Navigator: Sakib    
 def second(tup):
     """
     This method is for returning the last member of a tuple
@@ -45,11 +72,7 @@ def draft_round(player_df):
         The dictionary draft_dict. 
     
     """
-    #ranked = fantasy_draft_rank.Rank(player_df).rank()
-    
-    
-    # print(ranked.roster)
-    # unsorted_ranks = list()
+
     rank = ranks.Rank(player_df)
     rank.position_points()
     unsorted_ranks = list()
@@ -78,13 +101,13 @@ def mock_draft(df):
     """Simulates an 8 person mock draft. 
     
     Args:
-        draft_dict (dict): A dictionary containing the players information. 
+        draft_dict (dict): A dictionary containing the players information.
+    Side effects:
+        Modifies the values or roster of the Participant objects
+        Prints the particpants roster in progress
+        Prints every roster from the mock draft simulation
         
     """
-    
-        
-    # data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
-    # df = pd.DataFrame(data)
     
     ranked = fantasy_draft_rank.Rank(df)
     playerName_position = {}
@@ -116,28 +139,29 @@ def mock_draft(df):
     draft_players[draft_pick] = user
     
     current_round = 0
-    #print(repr(players_ranked[1]))
+    #iterates through each round of the draft (8).
     while current_round < 8:
         print("\n\n")
         print(f"Round: {current_round + 1}")
         print("Recomendations:\n", players_ranked[0:16])
         print("\n")
         current_round += 1 
+        #itterates each perticipant for each round
         for draft_player in draft_players:
             iterator = 0
-            if draft_player.name == "User":
-                
+            if draft_player.name == "User":  
                 complete = 0
                 while complete == 0:
-                    selection = input("Make your selection: ")                                  #controlled vocab
+                    selection = input("Make your selection: ") 
+                    #Cannot be a player already taken
+                    #Must be correct spelling, case sensitive
+                    #Must be a player in the list of players
+                    #Must have position open for the selection
                     if selection in [player.player_name for player in players_ranked]:
                         complete = 1
-
-                #print(repr(selection))
                 for i in range(len(players_ranked)):
-                    #print(players_ranked[iterator].player_name)
+
                     if selection == players_ranked[iterator].player_name:
-                        #print(selection == players_ranked[iterator].player_name)
                         if players_ranked[iterator].position == "QB":
                             if draft_player.roster["QB"] == None:
                                 draft_player.roster["QB"] = players_ranked[iterator]
@@ -191,8 +215,6 @@ def mock_draft(df):
                                 players_ranked.remove(players_ranked[iterator])
                                 iterator -= 1
                     iterator += 1
-                # print(draft_player.roster)
-                #print(draft_player.roster)
             else:
                 iterator = 0
                 for i in range(len(players_ranked)):
@@ -276,7 +298,5 @@ if __name__ == "__main__":
     df = pd.DataFrame(data)
     
     mock_draft(df)
-    # myRank = fantasy_draft_rank.Rank(df)
-    # roster = myRank.position_points()
-    # print(roster)
+
     

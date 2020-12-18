@@ -9,8 +9,17 @@ import pandas as pd
 import pprint
 
 class League():
+    """
+    A class that creates a dictionary of the NFL players and their information
+    Attributes:
+        player_dict (player_dict): A dictionary of NFL player's and their information extracted from the pandas dataframe.
+    """
     #Driver: Sakib Navigator: Grant
     def __init__(self, df):
+        """initializes League object
+        Arguments:
+            df (Data Frame): A pandas data frame with the extracted the player's information from the API.
+        """
         self.player_dict= {}
         stats = df["stats"] 
         counter = 0
@@ -24,26 +33,32 @@ class League():
             self.player_dict[i]["position"] = pos_list[counter]
             counter+=1
 
-        #print(self.player_dict["Lamar Jackson"])
         
 
 class Rank():
     """This class will rank the players from best to worst based on their 
     statistics from the 2019 season.
+    Attributes:
+        ranked_league which is an object of type League
+        roster which is the player_dict attribute of ranked_league
+        frame which is the data frame from the API
     """
-    
+    #Driver: Rachel Navigator: William
     def __init__(self, df):
-        #Driver: Rachel Navigator: William
+        """Initializes Rank object
+        Arguments:
+            df (Data Frame): a Pandas data frame of the information extracted from the API
+        """
         self.ranked_league = League(df)
         self.roster = self.ranked_league.player_dict
         self.frame = df
         
         for i in df["player_name"]:
             self.roster[i]["rank_points"] = 0
-        #self.rank_points = ranked_league.player_dict[i]["rank_points"]
-               
-    def position_points(self):                                 #TAKES POSITION AS ARG
-        #Driver: William Navigator: Grant
+        
+        
+    #Driver: William Navigator: Grant           
+    def position_points(self):                     
         """This method will find out what the position is 
         and add or take away points to the players value.
         
@@ -57,8 +72,7 @@ class Rank():
             The variable self.rank_points.
         
         """
-        #self.ranked_league.player_dict[self.player]["rank_points"] = 0
-        
+
         
         for i in self.frame["player_name"]:
             
@@ -236,16 +250,18 @@ class Rank():
                 self.roster[i]["rank_points"] -= 10
             elif self.roster[i]["passing"]["int"] > 30:
                 self.roster[i]["rank_points"] -= 12
-
+#Driver: William Navigator: Rachel
 def main():
-    """Reads in the API and sets it equal to a variable called players.
+    """Reads in the API and sets it equal to a variable called players, and passes through the pandas dataframe from the API..
     
     """
     data = pd.read_json("https://www.fantasyfootballdatapros.com/api/players/2019/all")
     df = pd.DataFrame(data)
     rank = Rank(df)
     rank.position_points()
-    pprint.pprint(rank.roster)
+  
+    #Uncomment line below to see what it outputs
+    #pprint.pprint(rank.roster)
     
 
 if __name__ == "__main__":
