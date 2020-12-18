@@ -34,7 +34,7 @@ def second(tup):
     """
     return tup[-1]
     
-#Driver: William Navigator: Rachel
+#Driver: William Navigator: Sakib
 def draft_round(player_df):
     """Sorts the players into draft rounds based on their ranks. 
     
@@ -73,7 +73,7 @@ def draft_round(player_df):
     return player_list
     
 
-#Driver: Rachel Navigator: Grant
+#Driver: Grant Navigator: Rachel
 def mock_draft(df):
     """Simulates an 8 person mock draft. 
     
